@@ -1,1 +1,39 @@
+.changelog {
+  max-width: 600px; 
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+}
+.version {
+  border-left: 3px solid #4CAF50; 
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.version-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+.version-number {
+  font-weight: bold;
+  color: #4CAF50;
+}
+.version-date {
+  font-size: 0.9em;
+  color: #888;
+}
+.version-description {
+  margin: 0;
+  line-height: 1.4;
+}
+@media (max-width: 400px) {
+  .version-header {
+    flex-direction: column;
+    gap: 3px;
+  }
+}
 
