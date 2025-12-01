@@ -1,135 +1,215 @@
-// fullpage jump navigation + Swiper coverflow + demos + form handling
+// script.js - optimized, accessible, full behavior
 document.addEventListener('DOMContentLoaded', () => {
-  // --- fullpage jump logic (no smooth) ---
-  const sections = Array.from(document.querySelectorAll('.section'));
+  /* -------------------------
+     Utilities
+  --------------------------*/
+  const $ = (sel, ctx=document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+
+  /* -------------------------
+     Theme toggle (dark/light)
+  --------------------------*/
+  const themeToggle = $('#themeToggle');
+  const root = document.documentElement;
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) root.setAttribute('data-theme', savedTheme);
+  themeToggle?.addEventListener('click', () => {
+    const cur = root.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  /* -------------------------
+     Mobile menu
+  --------------------------*/
+  const mobileBtn = $('#mobileMenuBtn');
+  const mobileMenu = $('#mobileMenu');
+  if (mobileBtn && mobileMenu) {
+    mobileBtn.addEventListener('click', () => {
+      const open = mobileBtn.getAttribute('aria-expanded') === 'true';
+      mobileBtn.setAttribute('aria-expanded', String(!open));
+      if (open) mobileMenu.hidden = true;
+      else mobileMenu.hidden = false;
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      mobileMenu.hidden = true;
+      mobileBtn.setAttribute('aria-expanded','false');
+    }));
+  }
+
+  /* -------------------------
+     Fullpage jump navigation
+  --------------------------*/
+  const sections = $$('.section');
   let current = 0;
   let isBusy = false;
-  const JUMP_DELAY = 700;
+  const JUMP_DELAY = 650;
 
-  // initial position from hash if any
+  // map id -> index
+  const idToIndex = {};
+  sections.forEach((s, i) => idToIndex[s.id] = i);
+
+  // initial from hash
   const hash = window.location.hash;
-  if (hash) {
-    const idx = sections.findIndex(s => '#' + s.id === hash);
-    if (idx >= 0) current = idx;
-  }
-  function jumpToIndex(idx) {
+  if (hash && idToIndex[hash.replace('#','')] !== undefined) current = idToIndex[hash.replace('#','')];
+
+  function jumpToIndex(idx, behavior='auto') {
     idx = Math.max(0, Math.min(sections.length - 1, idx));
     current = idx;
     const target = sections[current];
     if (!target) return;
-    target.scrollIntoView({ behavior: 'auto' });
+    target.scrollIntoView({ behavior });
     history.replaceState(null, '', '#' + target.id);
   }
-  jumpToIndex(current);
+  jumpToIndex(current, 'auto');
 
-  function goNext(){ if (current < sections.length - 1) jumpToIndex(current + 1); }
-  function goPrev(){ if (current > 0) jumpToIndex(current - 1); }
+  // helpers next/prev
+  function goNext(){ if (current < sections.length - 1) jumpToIndex(current + 1, 'smooth'); }
+  function goPrev(){ if (current > 0) jumpToIndex(current - 1, 'smooth'); }
 
-  function isInProjects(target) {
-    return !!(target && (target.closest && (target.closest('#projets') || target.closest('.projects-swiper') || target.closest('.project-card') || target.closest('.swiper'))));
-  }
-
-  // wheel => jump (except when pointer is over projects carousel)
+  // wheel navigation (throttled)
+  let wheelThrottle = false;
   window.addEventListener('wheel', (e) => {
-    if (isBusy) return;
+    if (wheelThrottle) return;
+    // ignore if pointer inside swiper
     const el = document.elementFromPoint(e.clientX, e.clientY);
-    if (isInProjects(el)) return; // let Swiper handle
+    if (el && el.closest && el.closest('.projects-swiper')) return;
     const delta = e.deltaY;
-    if (delta > 20) {
-      if (current < sections.length - 1) { isBusy = true; goNext(); setTimeout(()=>isBusy=false, JUMP_DELAY); }
-    } else if (delta < -20) {
-      if (current > 0) { isBusy = true; goPrev(); setTimeout(()=>isBusy=false, JUMP_DELAY); }
-    }
+    if (Math.abs(delta) < 20) return;
+    wheelThrottle = true;
+    if (delta > 0) goNext(); else goPrev();
+    setTimeout(()=> wheelThrottle = false, JUMP_DELAY);
   }, { passive: true });
 
-  // keyboard navigation
+  // keyboard
   window.addEventListener('keydown', (e) => {
-    if (isBusy) return;
-    if (['ArrowDown','PageDown'].includes(e.key)) { e.preventDefault(); isBusy=true; goNext(); setTimeout(()=>isBusy=false,JUMP_DELAY); }
-    if (['ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); isBusy=true; goPrev(); setTimeout(()=>isBusy=false,JUMP_DELAY); }
-    if (e.key === 'Home') { e.preventDefault(); isBusy=true; jumpToIndex(0); setTimeout(()=>isBusy=false,JUMP_DELAY); }
-    if (e.key === 'End') { e.preventDefault(); isBusy=true; jumpToIndex(sections.length-1); setTimeout(()=>isBusy=false,JUMP_DELAY); }
+    if (['ArrowDown','PageDown'].includes(e.key)) { e.preventDefault(); goNext(); }
+    if (['ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); goPrev(); }
+    if (e.key === 'Home') { e.preventDefault(); jumpToIndex(0,'smooth'); }
+    if (e.key === 'End') { e.preventDefault(); jumpToIndex(sections.length-1,'smooth'); }
   });
 
-  // touch swipe vertical
+  // touch vertical swipe
   (function(){
-    let startY=0,endY=0,active=false;
-    window.addEventListener('touchstart',(e)=>{ if(e.touches && e.touches.length){ startY = e.touches[0].clientY; active=true; } },{passive:true});
-    window.addEventListener('touchmove',(e)=>{ if(!active) return; endY = e.touches[0].clientY; },{passive:true});
-    window.addEventListener('touchend',()=>{ if(!active||isBusy){ active=false; return; } const diff = startY - endY; if(Math.abs(diff)>60){ isBusy=true; if(diff>0) goNext(); else goPrev(); setTimeout(()=>isBusy=false,JUMP_DELAY); } active=false; },{passive:true});
+    let startY = 0, endY = 0, active = false;
+    window.addEventListener('touchstart', e => { if (e.touches && e.touches.length) { startY = e.touches[0].clientY; active = true; } }, { passive:true });
+    window.addEventListener('touchmove', e => { if (!active) return; endY = e.touches[0].clientY; }, { passive:true });
+    window.addEventListener('touchend', () => {
+      if (!active) return;
+      const diff = startY - endY;
+      if (Math.abs(diff) > 60) {
+        if (diff > 0) goNext(); else goPrev();
+      }
+      active = false;
+    }, { passive:true });
   })();
 
-  // nav links (data-goto)
-  document.querySelectorAll('[data-goto]').forEach(link=>{
-    link.addEventListener('click',(e)=>{
+  // nav links
+  $$('[data-goto]').forEach(link => {
+    link.addEventListener('click', (e) => {
       e.preventDefault();
       const href = link.getAttribute('href');
       if (!href || !href.startsWith('#')) return;
-      const idx = sections.findIndex(s=>('#'+s.id)===href);
-      if (idx>=0) jumpToIndex(idx);
+      const id = href.replace('#','');
+      if (idToIndex[id] !== undefined) jumpToIndex(idToIndex[id],'smooth');
     });
   });
 
-  // scroll-next button
-  const toNext = document.getElementById('toNext');
-  if (toNext) toNext.addEventListener('click', ()=> { if (current < sections.length-1) jumpToIndex(current+1); });
+  $('#toNext')?.addEventListener('click', () => { if (current < sections.length-1) jumpToIndex(current+1,'smooth'); });
 
-  // handle window resize to recenter
-  window.addEventListener('resize', ()=> jumpToIndex(current));
+  window.addEventListener('resize', () => jumpToIndex(current, 'auto'));
 
-  // --- Swiper coverflow initialization (projects) ---
-  const projectsSwiper = new Swiper('.projects-swiper', {
-    effect: 'coverflow',
-    grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: 'auto',
-    spaceBetween: 48,
-    loop: true,
-    coverflowEffect: { rotate: 0, stretch: 60, depth: 220, modifier: 1, slideShadows: false },
-    speed: 700,
-    autoplay: { delay: 4500, disableOnInteraction: true },
-    pagination: { el: '.projects-swiper .swiper-pagination', clickable: true },
-    keyboard: { enabled: true },
-    mousewheel: { forceToAxis: true, invert: false, sensitivity: 0.8 },
-    breakpoints: { 0: { spaceBetween: 20 }, 700: { spaceBetween: 36 }, 1100: { spaceBetween: 48 } },
-    on: {
-      init() {
-        this.slides.forEach(s => { const img = s.querySelector('.project-media'); if (img) img.style.transform = 'scale(1)'; });
-        // ensure page index remains; if pointer over swiper we don't hijack wheel (isInProjects handles this)
-      },
-      slideChangeTransitionStart() {
-        this.slides.forEach(slide => { const img = slide.querySelector('.project-media'); if (img) img.style.transform = 'scale(1)'; });
-        const active = this.slides[this.activeIndex] && this.slides[this.activeIndex].querySelector('.project-media');
-        if (active) active.style.transform = 'scale(1.06)';
-      }
+  /* -------------------------
+     Swiper initialization (coverflow)
+  --------------------------*/
+  // ensure Swiper lib is loaded
+  function initSwiperWhenReady() {
+    if (typeof Swiper === 'undefined') {
+      setTimeout(initSwiperWhenReady, 100);
+      return;
     }
+    const projectsSwiper = new Swiper('.projects-swiper', {
+      effect: 'coverflow',
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      spaceBetween: 48,
+      loop: true,
+      coverflowEffect: { rotate: 0, stretch: 60, depth: 220, modifier: 1, slideShadows: false },
+      speed: 700,
+      autoplay: { delay: 4500, disableOnInteraction: true },
+      pagination: { el: '.projects-swiper .swiper-pagination', clickable: true },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      keyboard: { enabled: true },
+      mousewheel: { forceToAxis: true, invert: false, sensitivity: 0.8 },
+      breakpoints: { 0: { spaceBetween: 20 }, 700: { spaceBetween: 36 }, 1100: { spaceBetween: 48 } },
+      on: {
+        init() {
+          // scale active slide image for slight parallax
+          this.slides.forEach(s => { const img = s.querySelector('.project-media'); if (img) img.style.transform = 'scale(1)'; });
+          const active = this.slides[this.activeIndex]?.querySelector('.project-media');
+          if (active) active.style.transform = 'scale(1.06)';
+        },
+        slideChangeTransitionStart() {
+          this.slides.forEach(slide => { const img = slide.querySelector('.project-media'); if (img) img.style.transform = 'scale(1)'; });
+          const active = this.slides[this.activeIndex]?.querySelector('.project-media');
+          if (active) active.style.transform = 'scale(1.06)';
+        }
+      }
+    });
+
+    // prevent page jump while using mousewheel over swiper
+    const swiperEl = document.querySelector('.projects-swiper');
+    if (swiperEl) {
+      swiperEl.addEventListener('mouseenter', ()=> { swiperEl.dataset.over = 'true'; });
+      swiperEl.addEventListener('mouseleave', ()=> { swiperEl.dataset.over = 'false'; });
+    }
+  }
+  initSwiperWhenReady();
+
+  /* -------------------------
+     Reveal on scroll - small animations
+  --------------------------*/
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('inview');
+      // optionally unobserve to keep it simple
+      // observer.unobserve(e.target)
+    });
+  }, { root: null, rootMargin: '0px', threshold: 0.12 });
+
+  // apply to sections and items with fade-up
+  $$('.section').forEach(s => {
+    s.classList.add('fade-up');
+    observer.observe(s);
+  });
+  $$('.project-card, .skill, .teaser, .method-graphic .step').forEach(el => {
+    el.classList.add('fade-up');
+    observer.observe(el);
   });
 
-  // Prevent page jump while using mousewheel inside the swiper by listening enter/leave
-  const swiperEl = document.querySelector('.projects-swiper');
-  if (swiperEl) {
-    swiperEl.addEventListener('mouseenter', ()=> { swiperEl.dataset.over = 'true'; });
-    swiperEl.addEventListener('mouseleave', ()=> { swiperEl.dataset.over = 'false'; });
-  }
-
-  // --- demo toggles for skill examples ---
-  document.querySelectorAll('.tag').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
+  /* -------------------------
+     Demo toggles (skills)
+  --------------------------*/
+  $$('.tag').forEach(btn => {
+    btn.addEventListener('click', () => {
       const demoId = btn.getAttribute('data-demo');
-      document.querySelectorAll('.demo').forEach(d=> d.classList.add('hidden'));
-      const show = document.getElementById(demoId);
-      if (show) show.classList.remove('hidden');
+      $$('.demo').forEach(d => d.classList.add('hidden'));
+      document.getElementById(demoId)?.classList.remove('hidden');
     });
   });
 
-  // --- contact form AJAX submit (Formspree compatible) ---
+  /* -------------------------
+     Contact form AJAX (Formspree)
+  --------------------------*/
   const form = document.getElementById('contactForm');
   const status = document.getElementById('formStatus');
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (!form.action || form.action.includes('{YOUR_FORM_ID}')) {
-        status.textContent = '⚠️ Remplace {YOUR_FORM_ID} par ton endpoint Formspree.';
+      if (!form.action || form.action.includes('YOUR_FORM_ID')) {
+        status.textContent = '⚠️ Remplace YOUR_FORM_ID par ton endpoint Formspree.';
         return;
       }
       const data = new FormData(form);
@@ -152,7 +232,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // footer year
+  /* -------------------------
+     Footer year
+  --------------------------*/
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* -------------------------
+     Accessibility: focus outline for keyboard
+  --------------------------*/
+  function handleFirstTab(e) {
+    if (e.key === 'Tab') {
+      document.documentElement.classList.add('user-is-tabbing');
+      window.removeEventListener('keydown', handleFirstTab);
+    }
+  }
+  window.addEventListener('keydown', handleFirstTab);
 });
