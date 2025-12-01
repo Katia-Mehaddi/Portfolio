@@ -3,173 +3,197 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Portfolio — Scroll fullpage & projets horizontaux</title>
+  <title>Portfolio — Tailwind + Locomotive + GSAP</title>
 
+  <!-- Tailwind CDN (pour prototypage rapide) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Locomotive Scroll CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css"/>
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+
+  <!-- Custom styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="bg-sky-50 text-slate-900">
 
-  <!-- NAV (optionnel) -->
-  <header class="site-header">
-    <nav class="nav container" aria-label="Navigation principale">
-      <a class="logo" href="#hero">MonLogo</a>
-      <div class="nav-links">
-        <a href="#a-propos">À propos</a>
-        <a href="#projets">Projets</a>
-        <a href="#competences">Compétences</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </nav>
+  <!-- NAV -->
+  <header class="fixed top-4 left-0 right-0 z-50 pointer-events-auto">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <a class="font-bold text-lg" href="#hero" data-scroll-to>MonLogo</a>
+      <nav class="space-x-4 text-slate-700 font-medium">
+        <a href="#a-propos" data-scroll-to class="hover:underline">À propos</a>
+        <a href="#projets" data-scroll-to class="hover:underline">Projets</a>
+        <a href="#competences" data-scroll-to class="hover:underline">Compétences</a>
+        <a href="#contact" data-scroll-to class="hover:underline">Contact</a>
+      </nav>
+    </div>
   </header>
 
-  <!-- MAIN: scroll-snap container -->
-  <main id="main-snap">
+  <!-- MAIN : locomotive-scroll wrapper -->
+  <main id="js-scroll" data-scroll-container>
 
     <!-- HERO -->
-    <section id="hero" class="panel snap-section hero">
-      <div class="hero__content container">
-        <div class="hero__text">
-          <h1>Never stop exploring the world.</h1>
-          <p>Je suis <strong>[Ton Nom]</strong> — développeur / designer web. J'aime créer des expériences immersives.</p>
-          <div class="hero-ctas">
-            <a class="btn" href="#projets">Voir mes projets</a>
-            <a class="btn ghost" href="#a-propos">À propos</a>
+    <section id="hero" class="min-h-screen flex items-center" data-scroll-section>
+      <div class="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
+        <div class="space-y-6" id="hero-left">
+          <h1 class="text-4xl md:text-5xl font-extrabold">Never stop exploring the world.</h1>
+          <p class="text-slate-700">Je suis <strong>[Ton Nom]</strong>, développeur & designer web — j'aime créer des expériences immersives.</p>
+          <div class="flex gap-3">
+            <a href="#projets" data-scroll-to class="btn-primary">Voir mes projets</a>
+            <a href="#a-propos" data-scroll-to class="btn-ghost">À propos</a>
           </div>
-          <div class="socials">
-            <a href="https://github.com/TON_PSEUDO" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://linkedin.com/in/TON_PSEUDO" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="https://twitter.com/TON_PSEUDO" target="_blank" rel="noopener">Twitter</a>
+          <div class="flex gap-3 mt-4 text-sm">
+            <a href="https://github.com/TON_PSEUDO" target="_blank" rel="noopener" class="underline">GitHub</a>
+            <a href="https://linkedin.com/in/TON_PSEUDO" target="_blank" rel="noopener" class="underline">LinkedIn</a>
+            <a href="mailto:toi@exemple.com" class="underline">Email</a>
           </div>
         </div>
 
-        <div class="hero__cards" aria-hidden="false">
-          <div class="card big">
-            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop" alt="">
-            <div class="card-label">Beach</div>
+        <div id="hero-right" class="flex justify-center md:justify-end">
+          <div class="rounded-xl overflow-hidden shadow-2xl w-full max-w-[480px]">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop"
+                 alt="Hero image" class="w-full h-80 object-cover">
+            <div class="p-4 bg-gradient-to-r from-black/50 to-transparent text-white font-semibold">Beach</div>
           </div>
         </div>
       </div>
 
-      <button class="scroll-indicator" id="scrollNext" aria-label="Descendre à la section suivante">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>
+      <button id="scrollNext" aria-label="Descendre" class="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 p-2 bg-white/20 rounded-full">
+        <svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14" /><path d="M19 12l-7 7-7-7" /></svg>
       </button>
     </section>
 
     <!-- A PROPOS -->
-    <section id="a-propos" class="panel snap-section about">
-      <div class="container two-col">
+    <section id="a-propos" class="min-h-screen flex items-center bg-gradient-to-b from-white to-sky-50" data-scroll-section>
+      <div class="container mx-auto px-4 grid md:grid-cols-2 gap-8">
         <div>
-          <h2>À propos</h2>
-          <p>Salut — je m'appelle <strong>[Ton Nom]</strong>. Je conçois et développe des sites web orientés UX, performants et responsives. J'utilise HTML, CSS, JS, React/Vue selon les besoins.</p>
-          <p>Remplace ce texte par ta bio courte — formation, expériences, technos.</p>
+          <h2 class="text-3xl font-bold">À propos</h2>
+          <p class="mt-4 text-slate-700">Salut — je m'appelle <strong>[Ton Nom]</strong>. Je conçois et développe des sites web orientés UX, performants et responsives.</p>
+          <p class="mt-2 text-slate-600">Remplace par ta bio, technos, expériences.</p>
         </div>
         <div>
-          <h3>Contact rapide</h3>
-          <p>Email: <a href="mailto:toi@exemple.com">toi@exemple.com</a></p>
-          <p>Téléphone: +33 6 12 34 56 78</p>
-          <div class="social-tiles">
-            <a href="#" aria-label="GitHub">GitHub</a>
-            <a href="#" aria-label="Dribbble">Dribbble</a>
-            <a href="#" aria-label="Behance">Behance</a>
+          <h3 class="text-xl font-semibold">Contact rapide</h3>
+          <p class="mt-2">Email: <a href="mailto:toi@exemple.com" class="underline">toi@exemple.com</a></p>
+          <div class="mt-4 flex gap-3">
+            <a href="#" class="px-3 py-1 bg-white rounded shadow">GitHub</a>
+            <a href="#" class="px-3 py-1 bg-white rounded shadow">Dribbble</a>
+            <a href="#" class="px-3 py-1 bg-white rounded shadow">Behance</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PROJETS (scroll horizontal) -->
-    <section id="projets" class="panel snap-section projects">
-      <div class="container">
-        <h2>Projets récents</h2>
+    <!-- PROJETS (Swiper horizontal) -->
+    <section id="projets" class="min-h-screen flex items-start py-12" data-scroll-section>
+      <div class="container mx-auto px-4 w-full">
+        <h2 class="text-3xl font-bold mb-6">Projets récents</h2>
 
-        <div class="projects-wrap">
-          <button class="proj-nav left" id="projPrev" aria-label="Projet précédent">‹</button>
+        <div class="relative">
+          <!-- left nav -->
+          <button id="projPrev" class="proj-nav absolute left-0 top-1/2 -translate-y-1/2 z-30">‹</button>
 
-          <div class="projects-scroll" id="projectsScroll" tabindex="0" aria-label="Carousel de projets - défilement horizontal">
-            <!-- Project cards (peux remplacer avec tes images/links) -->
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop" alt="Projet A">
-              <h4>Projet A</h4>
-              <p>Landing page + CMS.</p>
-              <a class="project-link" href="#">Voir</a>
-            </article>
+          <!-- Swiper -->
+          <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+              <!-- cards -->
+              <div class="swiper-slide">
+                <article class="project-card">
+                  <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop" alt="">
+                  <h4 class="font-semibold mt-2">Projet A</h4>
+                  <p class="text-sm text-slate-600">Landing page + CMS</p>
+                  <a class="inline-block mt-2 text-sky-600" href="#">Voir</a>
+                </article>
+              </div>
 
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1505691723518-36a6f8f5d3df?q=80&w=1200&auto=format&fit=crop" alt="Projet B">
-              <h4>Projet B</h4>
-              <p>Application responsive de réservation.</p>
-              <a class="project-link" href="#">Voir</a>
-            </article>
+              <div class="swiper-slide">
+                <article class="project-card">
+                  <img src="https://images.unsplash.com/photo-1505691723518-36a6f8f5d3df?q=80&w=1200&auto=format&fit=crop" alt="">
+                  <h4 class="font-semibold mt-2">Projet B</h4>
+                  <p class="text-sm text-slate-600">Application responsive</p>
+                  <a class="inline-block mt-2 text-sky-600" href="#">Voir</a>
+                </article>
+              </div>
 
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop" alt="Projet C">
-              <h4>Projet C</h4>
-              <p>Refonte UI/UX e-commerce.</p>
-              <a class="project-link" href="#">Voir</a>
-            </article>
+              <div class="swiper-slide">
+                <article class="project-card">
+                  <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop" alt="">
+                  <h4 class="font-semibold mt-2">Projet C</h4>
+                  <p class="text-sm text-slate-600">Refonte UI/UX</p>
+                  <a class="inline-block mt-2 text-sky-600" href="#">Voir</a>
+                </article>
+              </div>
 
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop" alt="Projet D">
-              <h4>Projet D</h4>
-              <p>Prototype interactif.</p>
-              <a class="project-link" href="#">Voir</a>
-            </article>
+              <div class="swiper-slide">
+                <article class="project-card">
+                  <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop" alt="">
+                  <h4 class="font-semibold mt-2">Projet D</h4>
+                  <p class="text-sm text-slate-600">Prototype</p>
+                  <a class="inline-block mt-2 text-sky-600" href="#">Voir</a>
+                </article>
+              </div>
+            </div>
           </div>
 
-          <button class="proj-nav right" id="projNext" aria-label="Projet suivant">›</button>
+          <!-- right nav -->
+          <button id="projNext" class="proj-nav absolute right-0 top-1/2 -translate-y-1/2 z-30">›</button>
         </div>
       </div>
     </section>
 
     <!-- COMPETENCES -->
-    <section id="competences" class="panel snap-section skills-section">
-      <div class="container">
-        <h2>Compétences</h2>
-        <div class="skills">
-          <span class="skill">HTML</span>
-          <span class="skill">CSS</span>
-          <span class="skill">JavaScript</span>
-          <span class="skill">React</span>
-          <span class="skill">Figma</span>
-          <span class="skill">Performance</span>
+    <section id="competences" class="min-h-screen flex items-center" data-scroll-section>
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold">Compétences</h2>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <span class="pill">HTML</span>
+          <span class="pill">CSS</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">React</span>
+          <span class="pill">Figma</span>
         </div>
       </div>
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="panel snap-section contact">
-      <div class="container">
-        <h2>Contact</h2>
+    <section id="contact" class="min-h-screen flex items-center bg-gradient-to-b from-white to-sky-50" data-scroll-section>
+      <div class="container mx-auto px-4 max-w-2xl">
+        <h2 class="text-3xl font-bold mb-4">Contact</h2>
 
-        <form id="contactForm" class="contact-form" action="https://formspree.io/f/{YOUR_FORM_ID}" method="POST">
-          <label class="sr-only" for="name">Nom</label>
-          <input id="name" name="name" type="text" placeholder="Ton nom" required>
+        <!-- REMPLACE l'action par ton endpoint Formspree -->
+        <form id="contactForm" action="https://formspree.io/f/{YOUR_FORM_ID}" method="POST" class="space-y-3">
+          <input name="name" type="text" placeholder="Ton nom" required class="input">
+          <input name="email" type="email" placeholder="Ton email" required class="input">
+          <textarea name="message" rows="6" placeholder="Ton message" required class="input"></textarea>
 
-          <label class="sr-only" for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="Ton email" required>
-
-          <label class="sr-only" for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Ton message" required></textarea>
-
-          <div class="form-row">
-            <button type="submit" class="btn">Envoyer</button>
-            <div id="formStatus" aria-live="polite" class="form-status"></div>
+          <div class="flex items-center gap-4">
+            <button type="submit" class="btn-primary">Envoyer</button>
+            <div id="formStatus" class="text-sm text-slate-700" aria-live="polite"></div>
           </div>
         </form>
 
-        <div class="social-footer">
-          <a href="https://github.com/TON_PSEUDO" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://linkedin.com/in/TON_PSEUDO" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="mailto:toi@exemple.com">Email</a>
+        <div class="mt-6 flex gap-4">
+          <a href="https://github.com/TON_PSEUDO" target="_blank" rel="noopener" class="underline">GitHub</a>
+          <a href="https://linkedin.com/in/TON_PSEUDO" target="_blank" rel="noopener" class="underline">LinkedIn</a>
         </div>
       </div>
     </section>
 
   </main>
 
-  <footer class="site-footer">
-    <div class="container">© <span id="year"></span> — [Ton Nom].</div>
+  <footer class="py-6 bg-sky-50">
+    <div class="container mx-auto px-4 text-center text-slate-600">© <span id="year"></span> — [Ton Nom]</div>
   </footer>
 
+  <!-- LIBRARIES (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <!-- App script -->
   <script src="script.js"></script>
 </body>
 </html>
