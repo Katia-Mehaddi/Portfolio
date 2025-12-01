@@ -1,28 +1,86 @@
-/* small custom styles while relying on Tailwind for most layout */
-:root{
-  --accent: #06a0b0;
-  --accent-2: #36c0d6;
+/* RESET + base */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:Inter,Arial,sans-serif;color:#053038;background:#f6fcfe}
+.container{width:min(1200px,94%);margin:0 auto;padding:0 16px}
+a{color:inherit;text-decoration:none}
+
+/* HEADER */
+.site-header{position:fixed;left:0;right:0;top:12px;z-index:80}
+.nav{display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:700}
+.nav-links a{margin-left:18px;font-weight:600;color:#03424a}
+
+/* main layout - we control scroll via JS, so allow full document height */
+#fullpage{position:relative}
+
+/* each section occupies 100vh */
+.section{
+  width:100%;
+  min-height:100vh;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  scroll-behavior:auto; /* ensure no automatic smooth */
 }
 
-/* buttons / pills */
-.btn-primary{
-  @apply inline-block bg-gradient-to-r from-sky-600 to-cyan-400 text-white px-4 py-2 rounded-full font-semibold shadow;
-}
-.btn-ghost{
-  @apply inline-block bg-white/10 border border-white/20 text-white px-4 py-2 rounded-full;
-}
-.pill{
-  display:inline-block;padding:.35rem .7rem;background:white;border-radius:999px;box-shadow:0 6px 18px rgba(2,40,44,0.06);
-}
+/* inner container for content spacing */
+.section-inner{width:100%;display:flex;gap:28px;align-items:center;justify-content:space-between}
 
-/* project card */
-.project-card{background:white;border-radius:12px;padding:12px;box-shadow:0 12px 30px rgba(2,40,44,0.06)}
-.project-card img{width:100%;height:200px;object-fit:cover;border-radius:8px}
-
-/* nav buttons for swiper */
-.proj-nav{
-  display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:999px;background:white;box-shadow:0 8px 24px rgba(2,40,44,0.08);font-size:22px;color:#0f172a;border:none;cursor:pointer;
+/* hero */
+#hero{
+  background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop');
+  background-size:cover;background-position:center;
+  color:white;
 }
+#hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,40,44,0.22),rgba(255,255,255,0.02))}
+.left{max-width:56ch}
+.left h1{font-size:clamp(28px,5vw,48px);margin-bottom:12px}
+.cta{margin:14px 0}
+.btn{display:inline-block;background:linear-gradient(90deg,#06a0b0,#36c0d6);color:white;padding:10px 14px;border-radius:999px;font-weight:600;margin-right:8px}
+.btn.ghost{background:rgba(255,255,255,0.12)}
 
-/* Locomotive default tweaks */
-.has-scroll-smooth{overflow:hidden}
+/* hero card */
+.hero-card{width:420px;border-radius:14px;overflow:hidden;box-shadow:0 12px 30px rgba(2,40,44,0.18)}
+.hero-card img{width:100%;height:320px;object-fit:cover;display:block}
+.hero-label{padding:10px;background:linear-gradient(90deg,rgba(0,0,0,0.35),transparent);color:white;font-weight:700}
+
+/* scroll next button */
+.scroll-btn{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.4);color:white;border:0;padding:10px 12px;border-radius:999px;cursor:pointer;z-index:30}
+
+/* about */
+.about{background:linear-gradient(180deg,#f9ffff,#eef9fb);color:#043038}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+
+/* projects */
+.projects-wrapper{display:flex;align-items:center;gap:12px;margin-top:18px}
+.mySwiper{width:100%;padding:18px 8px}
+.swiper-slide{width:320px;height:auto}
+.project-card{background:#fff;border-radius:12px;padding:12px;box-shadow:0 10px 30px rgba(2,40,44,0.06)}
+.project-card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
+
+/* swiper nav */
+.proj-nav{background:white;border:none;width:44px;height:44px;border-radius:50%;box-shadow:0 8px 20px rgba(2,40,44,0.08);cursor:pointer;font-size:22px}
+
+/* skills */
+.skills{display:flex;flex-wrap:wrap;gap:10px}
+.skill{background:white;padding:8px 12px;border-radius:999px;box-shadow:0 6px 18px rgba(2,40,44,0.06)}
+
+/* contact */
+.contact-form{max-width:720px;display:flex;flex-direction:column;gap:10px}
+.contact-form input,.contact-form textarea{padding:10px;border-radius:8px;border:1px solid rgba(2,40,44,0.08)}
+.form-row{display:flex;align-items:center;gap:12px}
+.status{font-size:0.95rem;color:#03424a}
+
+/* footer */
+.site-footer{padding:18px 0;text-align:center;background:#eef9fb;color:#043038}
+
+/* responsive */
+@media (max-width:900px){
+  .section-inner{flex-direction:column;align-items:flex-start}
+  .hero-card{width:100%}
+  .swiper-slide{width:80%}
+  .two-col{grid-template-columns:1fr}
+}
