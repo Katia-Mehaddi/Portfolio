@@ -31,6 +31,40 @@
     tick();
   }
 
+  // Effet de défilement au survol (souris) et à l'appui long (tactile)
+  document.querySelectorAll('.scroll-shot').forEach(img => {
+    const slot = img.closest('.screenshot-slot');
+    let longPressTimer = null;
+
+    function startScroll(){
+      const maxScroll = slot.clientHeight - img.clientHeight; // valeur négative
+      if (maxScroll >= 0) return; // rien à faire défiler
+      img.style.setProperty('--scroll-y', maxScroll + 'px');
+      img.classList.add('scrolling');
+    }
+    function resetScroll(){
+      img.style.setProperty('--scroll-y', '0px');
+      img.classList.remove('scrolling');
+    }
+
+    // Souris
+    slot.addEventListener('mouseenter', startScroll);
+    slot.addEventListener('mouseleave', resetScroll);
+
+    // Tactile 
+    slot.addEventListener('touchstart', () => {
+      longPressTimer = setTimeout(startScroll, 300);
+    }, {passive:true});
+    slot.addEventListener('touchend', () => {
+      clearTimeout(longPressTimer);
+      resetScroll();
+    });
+    slot.addEventListener('touchcancel', () => {
+      clearTimeout(longPressTimer);
+      resetScroll();
+    });
+  });
+
   // Révélation au défilement
   if (!reduced && 'IntersectionObserver' in window){
     const io = new IntersectionObserver((entries)=>{
