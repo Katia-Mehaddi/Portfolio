@@ -1,306 +1,202 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Portfolio — [Ton Nom]</title>
-  <meta name="description" content="Portfolio — Développeur web front-end : sites rapides, responsives et orientés conversion." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
-  <link rel="stylesheet" href="styles.css">
-  <!-- Favicons (optional) -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katia Mehaddi Développeuse web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header" role="banner">
-    <nav class="nav container" aria-label="Navigation principale">
-      <a class="logo" href="#hero" data-goto>MonLogo</a>
-      <div class="nav-actions">
-        <button id="themeToggle" aria-label="Basculer thème">🌓</button>
-      </div>
-      <div class="nav-links" role="navigation" aria-label="Liens du site">
-        <a href="#hero" data-goto>Accueil</a>
-        <a href="#projets" data-goto>Projets</a>
-        <a href="#competences" data-goto>Compétences</a>
-        <a href="#methodo" data-goto>Méthodo</a>
-        <a href="#services" data-goto>Services</a>
-        <a href="#contact" data-goto>Contact</a>
-      </div>
-      <button id="mobileMenuBtn" class="mobile-menu-btn" aria-expanded="false" aria-controls="mobileMenu">☰</button>
-    </nav>
-    <!--<div id="mobileMenu" class="mobile-menu" hidden>
-      <a href="#hero" data-goto>Accueil</a>
-      <a href="#projets" data-goto>Projets</a>
-      <a href="#competences" data-goto>Compétences</a>
-      <a href="#methodo" data-goto>Méthodo</a>
-      <a href="#services" data-goto>Services</a>
-      <a href="#contact" data-goto>Contact</a>
-    </div>-->
-  </header>
+<div class="grid-bg" aria-hidden="true"></div>
 
-  <main id="fullpage" aria-live="polite">
-    <!-- HERO -->
-    <section id="hero" class="section" aria-label="Accueil">
-      <div class="section-inner container">
-        <div class="left">
-          <h1>Développeur web — je crée des solutions efficaces pour votre entreprise</h1>
-          <p class="lead">Sites rapides, responsives et orientés conversion — React / Vue / Static performant.</p>
+<header>
+  <nav>
+    <div class="brand">KATIA <span>MEHADDI</span></div>
+    <div class="nav-links">
+      <a href="#projets">Projets</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
 
-          <ul class="hero-bullets" aria-hidden="false">
-            <li><strong>Spécialité :</strong> Front-end moderne (React / Vue) & performance</li>
-            <li><strong>Résultats :</strong> Optimisation des temps de chargement, UX claire</li>
-          </ul>
+<main>
+  <section class="hero container" style="border-top:none;">
+    <div class="eyebrow reveal">Tizi Ouzou, Algérie</div>
+    <h1 class="display reveal d1">Katia <em>Mehaddi</em></h1>
+    <p class="role-line reveal d2">Développeuse web, je conçois et construis des sites et boutiques en ligne sur-mesure : WordPress/Elementor, WooCommerce, PHP. Ci-dessous, un aperçu de sites que j'ai réalisés pour différents secteurs.</p>
+    <div class="type-line reveal d3">
+      <span class="mono">&gt;</span> <span id="typed"></span><span class="cursor"></span>
+    </div>
+    <div class="hero-meta reveal d3">
+      <span>WORDPRESS · ELEMENTOR</span>
+      <span>WOOCOMMERCE</span>
+      <span>PHP</span>
+      <span>PYTHON</span>
+    </div>
+  </section>
 
-          <div class="cta">
-            <a class="btn" href="#projets" data-goto>Voir mes projets</a>
-            <a class="btn ghost" href="#contact" data-goto>Contact</a>
-          </div>
+  <section id="projets" class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">Réalisations</span>
+      <h2>Sites réalisés</h2>
+      <p>Un aperçu de la page d'accueil de chaque site.</p>
+    </div>
 
-          <div class="hero-socials">
-            <a href="https://github.com/TON_PSEUDO" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://linkedin.com/in/TON_PSEUDO" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="mailto:toi@exemple.com">Email</a>
-          </div>
-        </div>
+    <div class="plates">
 
-        <div class="right" aria-hidden="false">
-          <!-- teaser grid with responsive images + srcset -->
-          <div class="teaser-grid">
-            <article class="teaser">
-              <img loading="lazy" width="120" height="80"
-                srcset="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=400 400w, https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=800 800w"
-                sizes="(max-width:600px) 120px, 160px"
-                src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=800&auto=format&fit=crop"
-                alt="Site e-commerce">
-              <div class="teaser-meta">
-                <h4>Site e-commerce responsive</h4>
-                <p>Optimisé pour mobile — +30% vitesse.</p>
-              </div>
-            </article>
-
-            <article class="teaser">
-              <img loading="lazy" width="120" height="80"
-                src="https://images.unsplash.com/photo-1505691723518-36a6f8f5d3df?q=80&w=800&auto=format&fit=crop"
-                alt="App réservation">
-              <div class="teaser-meta">
-                <h4>Application de réservation</h4>
-                <p>Flux UI simplifié — meilleure conversion.</p>
-              </div>
-            </article>
-
-            <article class="teaser">
-              <img loading="lazy" width="120" height="80"
-                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop"
-                alt="Refonte e-commerce">
-              <div class="teaser-meta">
-                <h4>Refonte e-commerce</h4>
-                <p>Refonte UI/UX et optimisation SEO technique.</p>
-              </div>
-            </article>
-
-            <a class="more-projects" href="#projets" data-goto>Voir tous les projets →</a>
-          </div>
-        </div>
-      </div>
-      <button id="toNext" class="scroll-btn" aria-label="Aller à la section suivante">↓</button>
-    </section>
-
-    <!-- PROJETS -->
-    <section id="projets" class="section" aria-label="Projets">
-      <div class="section-inner container">
-        <h2 class="section-title">Projets & études de cas</h2>
-        <p class="section-sub">Carrousel de projets — clique pour en savoir plus.</p>
-        <div class="carousel-wrap">
-          <div class="swiper projects-swiper" aria-roledescription="carousel">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <article class="project-card cover case-teaser" tabindex="0">
-                  <div class="project-media" role="img" aria-label="Étude de cas site e-commerce" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop')"></div>
-                  <div class="project-meta">
-                    <h3>Étude de cas — Site e-commerce</h3>
-                    <p><strong>Contexte :</strong> Site lent, faible conversion.<br><strong>Solution :</strong> Refonte SPA, lazy loading, optimisation images.<br><strong>Résultat :</strong> Temps de chargement -40%, +22% conversion.</p>
-                    <a class="project-cta" href="#" aria-label="Voir l'étude de cas">Voir l'étude de cas</a>
-                  </div>
-                </article>
-              </div>
-
-              <!-- more slides -->
-              <div class="swiper-slide">
-                <article class="project-card cover" tabindex="0">
-                  <div class="project-media" role="img" aria-label="Site e-commerce responsive" style="background-image:url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1400&auto=format&fit=crop')"></div>
-                  <div class="project-meta">
-                    <h3>Site e-commerce responsive</h3>
-                    <p>Landing immersive, UI moderne, checkout optimisé.</p>
-                  </div>
-                </article>
-              </div>
-
-              <div class="swiper-slide">
-                <article class="project-card cover" tabindex="0">
-                  <div class="project-media" role="img" aria-label="Application de réservation" style="background-image:url('https://images.unsplash.com/photo-1505691723518-36a6f8f5d3df?q=80&w=1400&auto=format&fit=crop')"></div>
-                  <div class="project-meta">
-                    <h3>Application de réservation</h3>
-                    <p>Expérience optimisée pour mobiles & tablettes.</p>
-                  </div>
-                </article>
-              </div>
-
-              <div class="swiper-slide">
-                <article class="project-card cover" tabindex="0">
-                  <div class="project-media" role="img" aria-label="Refonte UI/UX" style="background-image:url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1400&auto=format&fit=crop')"></div>
-                  <div class="project-meta">
-                    <h3>Refonte UI/UX</h3>
-                    <p>Système de design, composants réutilisables et docs.</p>
-                  </div>
-                </article>
-              </div>
+      <article class="plate reveal">
+        <div class="plate-frame">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="browser-shell">
+            <div class="browser-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="url">groupebaloul.com</span>
             </div>
-
-            <div class="swiper-pagination" role="navigation" aria-label="Pagination"></div>
-            <button class="swiper-button-prev" aria-label="Slide précédente"></button>
-            <button class="swiper-button-next" aria-label="Slide suivante"></button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- COMPETENCES -->
-    <section id="competences" class="section" aria-label="Compétences">
-      <div class="section-inner container">
-        <div>
-          <h2 class="section-title">Compétences</h2>
-          <p class="section-sub">Stack technique & niveaux</p>
-
-          <div class="skills-grid" role="list">
-            <div class="skill" role="listitem">
-              <div class="skill-name">HTML5 / CSS3</div>
-              <div class="skill-level">Expert</div>
-            </div>
-            <div class="skill" role="listitem">
-              <div class="skill-name">JavaScript (ES6+)</div>
-              <div class="skill-level">Avancé</div>
-            </div>
-            <div class="skill" role="listitem">
-              <div class="skill-name">React / Vue</div>
-              <div class="skill-level">Avancé</div>
-            </div>
-            <div class="skill" role="listitem">
-              <div class="skill-name">Responsive Design</div>
-              <div class="skill-level">Expert</div>
-            </div>
-            <div class="skill" role="listitem">
-              <div class="skill-name">Performance web</div>
-              <div class="skill-level">Avancé</div>
-            </div>
-            <div class="skill" role="listitem">
-              <div class="skill-name">SEO technique</div>
-              <div class="skill-level">Intermédiaire</div>
+            <div class="screenshot-slot">
+              <img src="images/baloul.jpg" alt="Accueil du site Groupe Baloul, promoteur immobilier" loading="lazy">
             </div>
           </div>
         </div>
-
-        <div>
-          <h3>Exemples interactifs</h3>
-          <p>Cliquez une compétence pour voir un mini-exemple.</p>
-          <div class="skill-tags" role="tablist">
-            <button class="tag" data-demo="demo-html" role="tab">HTML & CSS</button>
-            <button class="tag" data-demo="demo-js" role="tab">Animation JS</button>
-            <button class="tag" data-demo="demo-react" role="tab">React</button>
-          </div>
-
-          <div class="demo-area" id="demo-area">
-            <div class="demo" id="demo-html">Mini demo — structure sémantique et responsive.</div>
-            <div class="demo hidden" id="demo-js">Mini demo — micro-interaction JS (hover & toggle).</div>
-            <div class="demo hidden" id="demo-react">Mini demo — snippet React (statique ici).</div>
+        <div class="plate-info">
+          <span class="plate-ref">PROMOTION IMMOBILIÈRE RÉSIDENCE</span>
+          <h3>Site vitrine promoteur immobilier</h3>
+          <p>Page d'accueil avec chiffres clés (expérience, clients, logements livrés), présentation des projets de résidence par bloc, galerie photo et formulaire de contact multi-champs pour les prospects.</p>
+          <div class="tags">
+            <span class="tag">WordPress</span>
+            <span class="tag">Elementor</span>
+            <span class="tag">ACF</span>
           </div>
         </div>
-      </div>
-    </section>
+      </article>
 
-    <!-- METHODO -->
-    <section id="methodo" class="section" aria-label="Méthodologie">
-      <div class="section-inner container two-col">
-        <div>
-          <h2 class="section-title">Méthodologie — Agile & collaborative</h2>
-          <p class="section-sub">Je travaille en méthode Agile pour livrer rapidement et s'adapter en cours de projet.</p>
-
-          <ol class="method-steps">
-            <li><strong>Planification :</strong> cadrage & objectifs</li>
-            <li><strong>Sprint :</strong> développement en cycles courts</li>
-            <li><strong>Revue :</strong> démonstration & retours</li>
-            <li><strong>Amélioration :</strong> ajustements et livraison</li>
-          </ol>
-
-          <p>Avantages pour le client : flexibilité, visibilité, livrables réguliers.</p>
-        </div>
-
-        <div class="method-graphic" aria-hidden="true">
-          <div class="step">Plan →</div>
-          <div class="step">Sprint →</div>
-          <div class="step">Review →</div>
-          <div class="step">Iterate</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section id="services" class="section" aria-label="Services">
-      <div class="section-inner container">
-        <div>
-          <h2 class="section-title">Services</h2>
-          <p class="section-sub">Offre complète pour lancer ou améliorer votre présence en ligne.</p>
-
-          <ul class="services-list">
-            <li><strong>Sites web responsive</strong> — conception & développement</li>
-            <li><strong>Interfaces UI</strong> — prototypes & design systems</li>
-            <li><strong>Intégration front-end</strong> — React / Vue / intégration API</li>
-            <li><strong>Optimisation performance</strong> — audits & correctifs</li>
-            <li><strong>Maintenance</strong> — suivi, mises à jour et sécurité</li>
-            <li><strong>Conseil & formation</strong> — déploiement digital & bonnes pratiques</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section" aria-label="Contact">
-      <div class="section-inner container">
-        <div>
-          <h2 class="section-title">Contact & appel à l'action</h2>
-          <p class="section-sub">Discutons de votre projet — devis rapide et sans engagement.</p>
-
-          <form id="contactForm" class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
-            <label class="sr-only" for="name">Nom</label>
-            <input id="name" type="text" name="name" placeholder="Ton nom" required>
-            <label class="sr-only" for="email">Email</label>
-            <input id="email" type="email" name="email" placeholder="Ton email" required>
-            <label class="sr-only" for="message">Message</label>
-            <textarea id="message" name="message" placeholder="Ton message / brief" required></textarea>
-
-            <div class="form-row">
-              <button class="btn" type="submit">Envoyer</button>
-              <div id="formStatus" aria-live="polite" class="status"></div>
+      <article class="plate reveal">
+        <div class="plate-frame">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="browser-shell">
+            <div class="browser-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="url">eroenergie.com</span>
             </div>
-          </form>
-
-          <div class="contact-socials" aria-hidden="false">
-            <a href="https://github.com/TON_PSEUDO" target="_blank" rel="noopener">GitHub</a> ·
-            <a href="https://linkedin.com/in/TON_PSEUDO" target="_blank" rel="noopener">LinkedIn</a> ·
-            <a href="mailto:toi@exemple.com">Email</a>
+            <div class="screenshot-slot">
+              <img src="images/eroe.jpg" alt="Accueil du site EROE, entreprise industrielle de l'énergie" loading="lazy">
+            </div>
           </div>
         </div>
+        <div class="plate-info">
+          <span class="plate-ref">SITE INDUSTRIEL ÉNERGIE</span>
+          <h3>Site vitrine entreprise industrielle</h3>
+          <p>Présentation des services (bureau d'étude, systèmes SCADA, haute tension, éclairage public...), chiffres clés, partenaires, actualités et formulaire de demande de devis.</p>
+          <div class="tags">
+            <span class="tag">WordPress</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="plate reveal">
+        <div class="plate-frame">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="browser-shell">
+            <div class="browser-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="url">essenzawellness.dz</span>
+            </div>
+            <div class="screenshot-slot">
+              <img src="images/essenza.jpg" alt="Accueil du site Essenza Wellness, studio Pilates et bien-être" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="plate-info">
+          <span class="plate-ref">STUDIO BIEN-ÊTRE PLANNING</span>
+          <h3>Site vitrine studio Pilates &amp; bien-être</h3>
+          <p>Planning interactif des séances par jour et par discipline, témoignages clients, FAQ et présentation du studio.</p>
+          <div class="tags">
+            <span class="tag">WordPress</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="plate reveal">
+        <div class="plate-frame">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="browser-shell">
+            <div class="browser-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="url">tanouchepastry.com</span>
+            </div>
+            <div class="screenshot-slot">
+              <img src="images/tanouche.jpg" alt="Accueil du site Tanouche Pastry, boutique de pâtisserie" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="plate-info">
+          <span class="plate-ref">WOOCOMMERCE PÂTISSERIE</span>
+          <h3>Boutique en ligne pâtisserie</h3>
+          <p>Boutique WooCommerce avec catalogue de créations (layer cakes, pièces montées), pages produits, avis clients et prise de commande en ligne.</p>
+          <div class="tags">
+            <span class="tag">WooCommerce</span>
+            <span class="tag">WordPress</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="stack" class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">Compétences</span>
+      <h2>Stack technique</h2>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-col reveal">
+        <h4>CMS &amp; e-commerce</h4>
+        <ul>
+          <li>WordPress / Elementor Pro</li>
+          <li>WooCommerce</li>
+          <li>ACF &amp; JetEngine</li>
+        </ul>
       </div>
-    </section>
-  </main>
+      <div class="stack-col reveal d1">
+        <h4>Développement</h4>
+        <ul>
+          <li>PHP</li>
+          <li>JavaScript</li>
+        </ul>
+      </div>
+      <div class="stack-col reveal d2">
+        <h4>Data &amp; automatisation</h4>
+        <ul>
+          <li>Python</li>
+          <li>Automatisation de scraping</li>
+          <li>Intégrations API</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-  <footer class="site-footer" role="contentinfo">
-    <div class="container">© <span id="year"></span> — [Ton Nom]</div>
-  </footer>
+  <section id="contact" class="container" style="border-bottom:1px solid var(--line);">
+    <div class="contact-box reveal">
+      <h2 class="display">Un site à construire ?</h2>
+      <div class="contact-links">
+        <a href="mailto:contact@votre-domaine.exemple">katiamehaddi.devweb@gmail.com</a>
+        <a href="https://www.linkedin.com/in/katia-mehaddi-54200b142/">LinkedIn / réseau pro</a>
+      </div>
+    </div>
+  </section>
+</main>
 
-  <!-- Swiper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js" defer></script>
-  <!-- App script -->
-  <script src="script.js" defer></script>
+<footer>
+  Katia Mehaddi "Portfolio"
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
