@@ -230,6 +230,7 @@
   }
 
   @media (max-width:820px){
+       .contact-box{ padding:20px;}
     .plate, .plate:nth-child(even){grid-template-columns:1fr;}
     .plate:nth-child(even) .plate-frame{order:1;}
     .plate:nth-child(even) .plate-info{order:2;}
