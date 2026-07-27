@@ -70,7 +70,7 @@
   .reveal.d3{transition-delay:.24s;}
 
   /* HERO */
-  .hero{padding:110px 0 90px; position:relative;}
+  .hero{padding:110px 50px 90px; position:relative;}
   .eyebrow{
     font-family:'IBM Plex Mono', monospace; font-size:0.78rem;
     color:var(--teal); letter-spacing:0.12em; text-transform:uppercase;
